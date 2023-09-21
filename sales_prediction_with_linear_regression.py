@@ -12,7 +12,7 @@ from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.linear_model import LinearRegression
 
 #loading data
-df = pd.read_csv("C:/datasets/Advertising.csv")
+df = pd.read_csv("Advertising.csv")
 
 #taking columns
 df.columns
@@ -39,8 +39,12 @@ w1 = reg_model.coef_[0][0] #0.04684310317699042
 w2 = reg_model.coef_[0][1] #0.17854434380887607
 w3 = reg_model.coef_[0][2] #0.00258618609398899
 
+
 #making prediction with X_train
 y_predict = reg_model.predict(X_train)
+
+#we can check the first row of X_train values with the weights 
+print(2.907947020816433 + (13.1 * 0.04684310317699042) + (0.4 * 0.17854434380887607) + (25.6 * 0.00258618609398899))
 
 #mean squared error
 mse = mean_squared_error(y_train, y_predict)
@@ -51,10 +55,12 @@ mae = mean_absolute_error(y_train, y_predict)
 #root mean squared error
 rmse = np.sqrt(mse)
 
-#k-fold cross validation
-cross_val = cross_val_score(reg_model, X, y, )
+#k-fold cross validation with r2 scoring
+r2_scores = cross_val_score(reg_model, X, y, cv=5, scoring='r2')
 
-
+#k-fold cross validation with neg_mean_squared_error scoring
+#cross_val_score's result is multiplied by "-" because neg_mean_squared_error parameter gives negative results
+rmse_scores = (np.sqrt(-cross_val_score(reg_model, X, y, cv=5, scoring='neg_mean_squared_error')))
 
 
 
